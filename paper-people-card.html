@@ -1,0 +1,134 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icons/social-icons.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-material/paper-material.html">
+
+<dom-module id="paper-people-card">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        max-width: 768px;
+      }
+      paper-material {
+          padding: 10px;
+          margin: 0 auto;
+      }
+      .table {
+          display: table;
+          width: 100%;
+          margin: 0px auto;
+          height: 100%;
+      }
+      .cell {
+          display: table-cell;
+          vertical-align: middle;
+      }
+      .description {
+       }
+      .add {
+          width: 10%;
+      }
+      .name {
+          width: 90%;
+      }
+      .name span {
+          margin-left: 20px;
+      }
+      .avatar {
+        border-radius: 150px;
+      }
+      .imagesGrid {
+          margin-top: 10px;
+      }
+      iron-image {
+          border: 1px solid #FFF;
+      }
+      paper-icon-button {
+          border: 1px solid #000;
+          border-radius: 100px;
+      }
+    </style>
+    
+    <iron-media-query query="(min-width: 426px)" query-matches="{{widthMoreThan426px}}"></iron-media-query>
+    <paper-material id="wrapper" elevation="1">
+       <div class="table">
+          <div class="description">
+               <div class="cell">
+                   <iron-image sizing="cover" width="[[avatarSize]]" height="[[avatarSize]]" src="[[avatar]]" class="avatar"></iron-image>
+               </div>
+               <div class="cell name">
+                   <span id="name">[[name]]</span>
+               </div>
+               <div class="cell add">
+                   <paper-icon-button id="btnAdd" icon="social:person-add" on-tap="_add"></paper-icon-button>
+               </div>
+           </div>
+           <div class="imagesGrid">
+               <template is="dom-repeat" items="{{images}}">
+                   <div class="cell">
+                       <iron-image sizing="cover" width="[[imagesSize]]" height="[[imagesSize]]" src="[[item]]"></iron-image>
+                   </div>
+               </template>
+           </div>
+       </div>
+    </paper-material>
+    
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'paper-people-card',
+      behaviors: [Polymer.IronResizableBehavior],
+      properties: {
+          avatar: {
+              type: String
+          },
+          name: {
+              type: String
+          },
+          widthMoreThan426px: {
+              type: Boolean,
+              observer: '_whenWidthMoreThan426px'
+          },
+          images: {
+              type: Array
+          }
+      },
+      listeners: {
+        'iron-resize': '_onIronResize'
+      },
+      get parent() {
+        if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            return this.parentNode.host;
+        }
+        return this.parentNode;
+      },
+      _onIronResize: function() {
+          this.imagesSize = Math.floor((this.$.wrapper.clientWidth / 3)-8);
+          this.avatarSize = Math.floor((this.$.wrapper.clientWidth / 6));
+      },
+      _whenWidthMoreThan426px: function() {
+          if(this.widthMoreThan426px) {
+              this.$.name.style.fontSize = 'xx-large';
+              this.$.btnAdd.style.height = '60px';
+              this.$.btnAdd.style.width = '60px';
+          }
+          else {
+              this.$.name.style.fontSize = 'medium';
+              this.$.btnAdd.style.height = '40px';
+              this.$.btnAdd.style.width = '40px';
+          }
+      },
+      _add: function() {
+          console.log('_add');
+          this.fire('add');
+      }
+    });
+  </script>
+</dom-module>

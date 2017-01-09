@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>paper-people-card test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../paper-people-card.html">
+  </head>
+  <body>
+    <test-fixture id="basic">
+      <template>
+        <paper-people-card></paper-people-card>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('paper-people-card', function() {
+        test('instantiating the element works', function() {
+          var element = fixture('basic');
+          assert.equal(element.is, 'paper-people-card');
+        });
+      });
+    </script>
+  </body>
+</html>
